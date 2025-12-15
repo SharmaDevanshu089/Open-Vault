@@ -2,20 +2,20 @@
 
 **A Native-First Password Manager for Windows**
 
-[![Made with Rust](https://img.shields.io/badge/Rust-🦀-orange?style=flat&logo=rust)](https://www.rust-lang.org/) [web:9]  
-[![Tauri](https://img.shields.io/badge/Tauri-App-blue?style=flat&logo=tauri)](https://tauri.app/) [web:5]  
-[![SvelteKit](https://img.shields.io/badge/SvelteKit-frontend-ff3e00?style=flat&logo=svelte)](https://kit.svelte.dev/) [web:9]  
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat)](#-license) [web:9]
+[![Made with Rust](https://img.shields.io/badge/Rust-🦀-orange?style=flat&logo=rust)](https://www.rust-lang.org/) 
+[![Tauri](https://img.shields.io/badge/Tauri-App-blue?style=flat&logo=tauri)](https://tauri.app/) 
+[![SvelteKit](https://img.shields.io/badge/SvelteKit-frontend-ff3e00?style=flat&logo=svelte)](https://kit.svelte.dev/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat)](#-license) 
 
 ---
 
 ## 📖 Overview
 
-**Open Vault** is a desktop application built to feel *native* — not like a web app running inside a browser shell. It delivers a true Windows desktop experience while maintaining enterprise-grade security by integrating directly with the operating system. [web:5]
+**Open Vault** is a desktop application built to feel *native* — not like a web app running inside a browser shell. It delivers a true Windows desktop experience while maintaining enterprise-grade security by integrating directly with the operating system. 
 
-Instead of reinventing storage, Open Vault uses the **Windows Credential Manager (OS Keyring)** for secret management, leveraging built-in encryption and authentication. The app uses **Tauri** to ship a lightweight, secure executable that integrates deeply with the Windows ecosystem. [web:5]
+Instead of reinventing storage, Open Vault uses the **Windows Credential Manager (OS Keyring)** for secret management, leveraging built-in encryption and authentication. The app uses **Tauri** to ship a lightweight, secure executable that integrates deeply with the Windows ecosystem. 
 
-This project highlights **Systems Programming**, **Secure Architecture**, and **Modern UI Engineering**, combining Rust, SvelteKit, and Fluent-inspired design. [web:7]
+This project highlights **Systems Programming**, **Secure Architecture**, and **Modern UI Engineering**, combining Rust, SvelteKit, and Fluent-inspired design. 
 
 ---
 
@@ -39,7 +39,7 @@ This project highlights **Systems Programming**, **Secure Architecture**, and **
 
 ### 🧩 Architecture
 
-Open Vault uses Tauri’s multi-process model with a clear separation of concerns. [web:5]
+Open Vault uses Tauri’s multi-process model with a clear separation of concerns.
 
 | Component         | Stack                       | Responsibilities                                                |
 |------------------|-----------------------------|-----------------------------------------------------------------|
@@ -49,18 +49,18 @@ Open Vault uses Tauri’s multi-process model with a clear separation of concern
 | **Styling**        | TailwindCSS                 | Fluent-inspired design, layout, and theming                     |
 | **State**          | Svelte Stores               | Application state and reactive data flow                        |
 
-Key backend crates: `tauri`, `keyring`, `serde`. [web:17]
+Key backend crates: `tauri`, `keyring`, `serde`. 
 
 ### 🔒 Security Model
 
 - **Storage**  
-  Credentials are stored as generic credentials in **Windows Credential Manager**, letting the OS handle secure persistence. [web:11]
+  Credentials are stored as generic credentials in **Windows Credential Manager**, letting the OS handle secure persistence. 
 
-- **Encryption**  
-  Encryption and decryption are handled by **DPAPI**, tied to the user’s Windows account, avoiding custom cryptography. [web:11]
+- **Encryption** 
+  Encryption and decryption are handled by **DPAPI**, tied to the user’s Windows account, avoiding custom cryptography. 
 
 - **IPC Security**  
-  Communication between the Rust backend and WebView is strictly typed and scoped through Tauri’s IPC bridge, minimizing attack surface area. [web:5]
+  Communication between the Rust backend and WebView is strictly typed and scoped through Tauri’s IPC bridge, minimizing attack surface area. 
 
 ---
 
@@ -70,9 +70,9 @@ Key backend crates: `tauri`, `keyring`, `serde`. [web:17]
 
 Install the following before setting up the project:
 
-- [Rust (latest stable)](https://www.rust-lang.org/tools/install) [web:7]  
-- [Node.js (LTS) & npm](https://nodejs.org/) [web:7]  
-- [Visual Studio C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (required for Tauri on Windows) [web:11]
+- [Rust (latest stable)](https://www.rust-lang.org/tools/install)
+- [Node.js (LTS) & npm](https://nodejs.org/)
+- [Visual Studio C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) (required for Tauri on Windows) 
 
 ### 🏗 Installation
 
@@ -114,22 +114,18 @@ npm run tauri build
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome. [web:10]
+Contributions, issues, and feature requests are welcome.
 
 - Open an issue to discuss bugs, UX ideas, or new features.  
 - Submit a pull request with clear descriptions and small, focused changes.  
 
-Before contributing, ensure your changes build successfully using the Tauri pipeline and basic project scripts. [web:5]
+Before contributing, ensure your changes build successfully using the Tauri pipeline and basic project scripts.
 
 ---
 
 ## 📸 Screenshots
 
 > *Coming soon*  
-> Add screenshots showcasing:
-> - The main vault list view  
-> - Mica/Acrylic background effect  
-> - Add / edit credential flows  
 
 ---
 
