@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passwords Management</title>
+  <link rel="stylesheet" href="styles/passwords.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script type="text/javascript" src="config.js" defer></script>
+  <script type="text/javascript" src="app.js" defer></script>
+  <script type="module" src="src/scripts/window-controls.js" defer></script>
+  <script type="text/javascript" src="src/scripts/passwords.js" defer></script>
+  <script>
+    // Add error handling for when server is not running
+    window.addEventListener('unhandledrejection', function (event) {
+      if (event.reason && event.reason.message && event.reason.message.includes('Failed to fetch')) {
+        alert('Server connection error. Please ensure the server is running.');
+      }
+    });
+  </script>
+</head>
+
+<body>
+    <div class="titlebar" id="titlebar">
+      <div class="titlebar-left">
+        <span class="app-title">Open Vault</span>
+      </div>
+      <div class="titlebar-controls">
+        <button id="minimizeBtn" class="title-btn" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+        <button id="maximizeBtn" class="title-btn" title="Maximize"><i class="fas fa-window-maximize"></i></button>
+        <button id="closeBtn" class="title-btn close" title="Close"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    <nav id="sidebar"></nav>
+    <main class="passwords-main-content">
+      <div class="titlebar" id="titlebar">
+        <div class="titlebar-left">
+          <span class="app-title">Open Vault</span>
+        </div>
+        <div class="titlebar-controls">
+          <button id="minimizeBtn" class="title-btn" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+          <button id="maximizeBtn" class="title-btn" title="Maximize"><i class="fas fa-window-maximize"></i></button>
+          <button id="closeBtn" class="title-btn close" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+    <header class="page-header">
+      <h1>Passwords Management</h1>
+      <div class="action-filter-bar">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="search" id="globalSearch" placeholder="Search All Passwords...">
+        </div>
+        <button id="toggleFiltersBtn" class="btn btn-secondary">
+          <i class="fas fa-filter"></i> Filters
+        </button>
+        <div class="header-actions">
+          <button id="addNewCredentialBtnGlobal" class="btn btn-secondary">
+            <i class="fas fa-plus"></i> Add New Credential
+          </button>
+          <button id="importCsvBtnGlobal" class="btn btn-primary">
+            <i class="fas fa-file-csv"></i> Import Passwords (CSV)
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section id="filterExpansionSection" class="filter-expansion" style="display: none;">
+      <div class="filter-fields">
+        <div class="filter-group">
+          <label for="filterWebsite">Website:</label>
+          <input type="text" id="filterWebsite" name="filterWebsite" class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="filterUsername">Username:</label>
+          <input type="text" id="filterUsername" name="filterUsername" class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="filterTags">Tags:</label>
+          <select id="filterTags" name="filterTags" class="filter-input" multiple>
+            <option value="work">Work</option>
+            <option value="personal">Personal</option>
+            <option value="finance">Finance</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="filterLastUpdatedStart">Last Updated:</label>
+          <input type="date" id="filterLastUpdatedStart" name="filterLastUpdatedStart" class="filter-input">
+          <span>to</span>
+          <input type="date" id="filterLastUpdatedEnd" name="filterLastUpdatedEnd" class="filter-input">
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button id="clearFiltersBtn" class="btn btn-tertiary">Clear Filters</button>
+        <button id="applyFiltersBtn" class="btn btn-primary">Apply Filters</button>
+      </div>
+    </section>
+    <div id="activeFiltersContainer" class="active-filters-display">
+    </div>
+
+    <section id="passwordContainersArea" class="password-containers-area">
+      <div id="emptyState" class="empty-state" style="display: none;"> <i
+          class="fas fa-folder-open empty-state-icon"></i>
+        <h2>No Passwords Yet</h2>
+        <p>Get started by importing a CSV or adding a new credential.</p>
+        <div class="empty-state-actions">
+          <button id="importCsvBtnEmpty" class="btn btn-primary">
+            <i class="fas fa-file-csv"></i> Import Passwords (CSV)
+          </button>
+          <button id="addNewCredentialBtnEmpty" class="btn btn-secondary">
+            <i class="fas fa-plus"></i> Add New Credential
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <div id="modalOverlay" class="modal-overlay" style="display: none;"></div>
+
+    <div id="importCsvModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2>Import CSV Passwords</h2>
+          <button class="close-modal-btn icon-btn" data-modal-id="importCsvModal" title="Close">&times;</button>
+        </header>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="importContainerTitleInput">Title for this Password Set:</label>
+            <input type="text" id="importContainerTitleInput" class="modal-input"
+              placeholder="e.g., Personal Logins, Work Accounts">
+            <small>This title will appear above your imported passwords.</small>
+          </div>
+          <div class="form-group">
+            <label for="csvFileInput">Select CSV File:</label>
+            <input type="file" id="csvFileInput" class="modal-input-file" accept=".csv">
+            <small>Only .csv files supported.</small>
+            <div id="csvFileNameDisplay" class="file-name-display"></div>
+          </div>
+          <div id="csvPreviewMappingSection" style="display:none;">
+            <h3>Map CSV Columns</h3>
+            <p>Preview of CSV data (first 5 rows):</p>
+            <div id="csvPreviewTableContainer" class="csv-preview-table"></div>
+            <p>Define column mappings:</p>
+            <div id="csvColumnMappingControlsContainer">
+            </div>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-tertiary close-modal-btn" data-modal-id="importCsvModal">Cancel</button>
+          <button id="initiateImportBtn" class="btn btn-primary">Import</button>
+          <button id="confirmCsvImportBtn" class="btn btn-primary" style="display:none;">Confirm Import</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="addCredentialModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2 id="addCredentialModalTitle">Add New Credential</h2>
+          <button class="close-modal-btn icon-btn" data-modal-id="addCredentialModal" title="Close">&times;</button>
+        </header>
+        <form id="addCredentialForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="credentialWebsite">Website/Service:</label>
+              <input type="text" id="credentialWebsite" class="modal-input" required>
+            </div>
+            <div class="form-group">
+              <label for="credentialUsername">Username:</label>
+              <input type="text" id="credentialUsername" class="modal-input">
+            </div>
+            <div class="form-group">
+              <label for="credentialPassword">Password:</label>
+              <div class="password-input-group">
+                <input type="password" id="credentialPassword" class="modal-input" required>
+                <button type="button" class="icon-btn-sm toggle-password-modal" title="Show/Hide Password"><i
+                    class="fas fa-eye"></i></button>
+              </div>
+              <button type="button" id="generatePasswordBtn" class="btn btn-link">Generate Strong Password</button>
+            </div>
+            <div class="form-group">
+              <label for="credentialConfirmPassword">Confirm Password:</label>
+              <input type="password" id="credentialConfirmPassword" class="modal-input" required>
+            </div>
+            <div class="form-group">
+              <label for="credentialNotes">Notes (Optional):</label>
+              <textarea id="credentialNotes" class="modal-input"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="credentialTags">Tags (Optional, comma-separated):</label>
+              <input type="text" id="credentialTags" class="modal-input" placeholder="e.g., work, social, finance">
+            </div>
+            <div class="form-group" id="targetContainerGroup">
+              <label for="credentialTargetContainer">Add to Container:</label>
+              <select id="credentialTargetContainer" class="modal-input">
+                <option value="_new_">Create New Container...</option>
+              </select>
+            </div>
+            <div class="form-group" id="newContainerNameGroup" style="display:none;">
+              <label for="newContainerName">New Container Name:</label>
+              <input type="text" id="newContainerName" class="modal-input">
+            </div>
+          </div>
+          <footer class="modal-footer">
+            <button type="button" class="btn btn-tertiary close-modal-btn"
+              data-modal-id="addCredentialModal">Cancel</button>
+            <button type="submit" id="saveCredentialBtn" class="btn btn-primary">Save</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+
+    <div id="confirmationModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h2 id="confirmationModalTitle">Confirm Action</h2>
+          <button class="close-modal-btn icon-btn" data-modal-id="confirmationModal" title="Close">&times;</button>
+        </header>
+        <div class="modal-body">
+          <p id="confirmationModalMessage">Are you sure?</p>
+        </div>
+        <footer class="modal-footer">
+          <button class="btn btn-tertiary close-modal-btn" data-modal-id="confirmationModal">Cancel</button>
+          <button id="confirmActionBtn" class="btn btn-danger">Confirm</button>
+        </footer>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
