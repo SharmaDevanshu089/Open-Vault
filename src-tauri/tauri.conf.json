@@ -12,9 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "open-vault",
-        "width": 800,
-        "height": 600,
+        "title": "Open Vault",
         "transparent": true
       }
     ],
