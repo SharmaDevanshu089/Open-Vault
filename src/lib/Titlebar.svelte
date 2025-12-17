@@ -3,7 +3,7 @@
   import { quintOut } from 'svelte/easing';
   import { X, Settings, ChevronDown, Home } from 'lucide-svelte';
   import{getCurrentWindow}from'@tauri-apps/api/window';
-  import { WebviewWindow } from '@tauri-apps/api/window';
+  import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
   
   // Tauri window handling
   let isDropdownOpen = false;
@@ -32,6 +32,7 @@
     await window.close();
   }
   async function openSettings() {
+    console.log("Opening Settings Window");
   const existingWin = await WebviewWindow.getByLabel('settings');
 
   if (existingWin) {
@@ -75,7 +76,7 @@
             <span>Home</span>
           </button>
 
-          <button class="menu-item">
+          <button class="menu-item" on:click={openSettings}>
             <Settings size={16} class="menu-icon" />
             <span>Settings</span>
           </button>

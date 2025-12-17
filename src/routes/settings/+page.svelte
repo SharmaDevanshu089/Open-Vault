@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Hello World!</h1>
-  <p>This is your separate settings window.</p>
+  <p>This is a separate settings window.</p>
 </div>
 
 <style>
@@ -11,7 +11,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #222;
+    background: transparent;
     color: white;
     font-family: sans-serif;
   }
