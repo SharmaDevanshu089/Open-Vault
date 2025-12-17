@@ -3,6 +3,7 @@
   import { quintOut } from 'svelte/easing';
   import { X, Settings, ChevronDown, Home } from 'lucide-svelte';
   import{getCurrentWindow}from'@tauri-apps/api/window';
+  import { WebviewWindow } from '@tauri-apps/api/window';
   
   // Tauri window handling
   let isDropdownOpen = false;
@@ -30,6 +31,21 @@
     const window = getCurrentWindow();
     await window.close();
   }
+  async function openSettings() {
+  const existingWin = await WebviewWindow.getByLabel('settings');
+
+  if (existingWin) {
+    await existingWin.setFocus();
+  } else {
+    const webview = new WebviewWindow('settings', {
+      url: '/settings',
+      title: 'Settings',
+      width: 600,
+      height: 400,
+      resizable: false
+    });
+  }
+}
 </script>
 
 <header class="titlebar" data-tauri-drag-region>
