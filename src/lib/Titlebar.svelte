@@ -11,9 +11,9 @@
   
   // Dynamically import Tauri's window API
   // This is done asynchronously to handle cases where Tauri isn't available (e.g., in browser dev mode)
-  import('@tauri-apps/api/window').then((module) => {
-    appWindow = module.appWindow; // Store reference to current window
-  }).catch(() => {}); // Silently fail if Tauri is not available
+//   import('@tauri-apps/api/window').then((module) => {
+//     appWindow = module.appWindow; // Store reference to current window
+//   }).catch(() => {}); // Silently fail if Tauri is not available
 
   // State management for dropdown menu
   let isDropdownOpen = false;
@@ -59,7 +59,7 @@
     <!-- Menu button that triggers dropdown -->
     <button 
       class="menu-trigger" 
-      class:active={isDropdownOpen}  <!-- Applies 'active' class when dropdown is open -->
+      class:active={isDropdownOpen}
       on:click={toggleDropdown}
     >
       <!-- Folder icon -->
@@ -78,8 +78,7 @@
     {#if isDropdownOpen}
       <div 
         class="dropdown-panel"
-        transition:slide={{ duration: 200, easing: quintOut, axis: 'y' }} <!-- Smooth slide animation -->
-      >
+        transition:slide={{ duration: 200, easing: quintOut, axis: 'y' }}>
         <div class="dropdown-content">
           <!-- Settings menu item -->
           <button class="menu-item">
