@@ -1,0 +1,193 @@
+<script lang="ts">
+  import { createEventDispatcher } from 'svelte';
+  
+  // Initialize the event dispatcher to send data back to the parent
+  const dispatch = createEventDispatcher();
+
+  // Props: What is currently selected?
+  export let selected = 'mica';
+
+  // The available options
+  const options = [
+    { id: 'mica', label: 'Mica', desc: 'Standard Windows 11 feel. Samples desktop wallpaper.' },
+    { id: 'acrylic', label: 'Acrylic', desc: 'Glassy transparency. Samples windows behind app.' },
+    { id: 'blur', label: 'Blur', desc: 'Legacy Windows 10 aero-style blur.' },
+    { id: 'none', label: 'Solid', desc: 'Opaque black background. Best performance.' }
+  ];
+
+  function select(id: string) {
+    selected = id;
+    dispatch('change', id);
+  }
+</script>
+
+<div class="grid-container">
+  {#each options as option}
+    <button 
+      class="card" 
+      class:active={selected === option.id}
+      on:click={() => select(option.id)}
+    >
+      <div class="preview-window">
+        <div class="wallpaper"></div> 
+        <div class="effect-layer {option.id}"></div>
+        <div class="mock-ui">
+          <div class="line"></div>
+          <div class="line short"></div>
+        </div>
+      </div>
+
+      <div class="text-content">
+        <span class="label">{option.label}</span>
+        <span class="desc">{option.desc}</span>
+      </div>
+      
+      <div class="radio-circle">
+        {#if selected === option.id}
+          <div class="dot"></div>
+        {/if}
+      </div>
+    </button>
+  {/each}
+</div>
+
+<style>
+  /* GRID LAYOUT */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    width: 100%;
+  }
+
+  /* CARD BASE STYLES */
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* ACTIVE STATE (Windows Accent Color) */
+  .card.active {
+    background: rgba(96, 205, 255, 0.08); /* Faint blue bg */
+    border-color: #60cdff;
+  }
+
+  /* PREVIEW WINDOW SIMULATION */
+  .preview-window {
+    width: 100%;
+    height: 80px;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    background: #111; /* Fallback */
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* Fake colorful wallpaper to test transparency */
+  .wallpaper {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, #ff0055, #0055ff);
+    opacity: 0.5;
+  }
+
+  /* THE EFFECT LAYERS */
+  .effect-layer {
+    position: absolute;
+    inset: 0;
+  }
+  
+  /* Mica: Opaque blur, tint dependent */
+  .effect-layer.mica {
+    background: rgba(32, 32, 32, 0.85);
+    backdrop-filter: blur(20px);
+  }
+
+  /* Acrylic: More transparent, noisy */
+  .effect-layer.acrylic {
+    background: rgba(32, 32, 32, 0.4);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Blur: Simple blur */
+  .effect-layer.blur {
+    background: rgba(32, 32, 32, 0.6);
+    backdrop-filter: blur(5px);
+  }
+
+  /* Solid: Just dark */
+  .effect-layer.none {
+    background: #222;
+  }
+
+  /* Mock UI Lines */
+  .mock-ui {
+    position: absolute;
+    top: 10px; left: 10px;
+    z-index: 10;
+  }
+  .line { height: 4px; width: 60px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 6px; }
+  .line.short { width: 30px; }
+
+  /* TEXT STYLES */
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+  }
+
+  .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .desc {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.4;
+  }
+
+  /* RADIO CIRCLE (Top Right) */
+  .radio-circle {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card.active .radio-circle {
+    border-color: #60cdff;
+    background: #60cdff;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #000;
+  }
+</style>
