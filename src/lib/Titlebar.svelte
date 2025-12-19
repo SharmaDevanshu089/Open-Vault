@@ -2,11 +2,18 @@
   import { slide } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import { X, Settings, ChevronDown, Home } from 'lucide-svelte';
-  import{getCurrentWindow}from'@tauri-apps/api/window';
+  import { getCurrentWindow } from '@tauri-apps/api/window';
   import { WebviewWindow } from '@tauri-apps/api/webviewWindow';
   
+  // 1. IMPORT THE STORE TO TRACK URL
+  import { page } from '$app/stores';
+
   // Tauri window handling
   let isDropdownOpen = false;
+
+  // 2. REACTIVE CHECK: Are we on the home page?
+  // The '$' means this updates automatically whenever the URL changes.
+  $: isHomePage = $page.url.pathname === '/';
 
   function toggleDropdown() {
     isDropdownOpen = !isDropdownOpen;
@@ -31,34 +38,35 @@
     const window = getCurrentWindow();
     await window.close();
   }
-async function openSettings() {
-  console.log('Opening Settings Window');
 
-  const existingWin = await WebviewWindow.getByLabel('settings'); // ✅ await
+  async function openSettings() {
+    console.log('Opening Settings Window');
 
-  if (existingWin) {
-    await existingWin.setFocus(); // ✅ now existingWin is WebviewWindow, not a Promise
-    return;
+    const existingWin = await WebviewWindow.getByLabel('settings'); 
+
+    if (existingWin) {
+      await existingWin.setFocus(); 
+      return;
+    }
+
+    const webview = new WebviewWindow('settings', {
+      url: '/settings',
+      title: 'Settings',
+      width: 400,
+      height: 600,
+      resizable: false,
+      decorations: true,
+      transparent: true
+    });
+
+    webview.once('tauri://created', () => {
+      console.log('Settings window created');
+    });
+
+    webview.once('tauri://error', (e) => {
+      console.error('Settings window error', e);
+    });
   }
-
-  const webview = new WebviewWindow('settings', {
-    url: '/settings',
-    title: 'Settings',
-    width: 400,
-    height: 600,
-    resizable: false,
-    decorations:true,
-    transparent:true
-  });
-
-  webview.once('tauri://created', () => {
-    console.log('Settings window created');
-  });
-
-  webview.once('tauri://error', (e) => {
-    console.error('Settings window error', e);
-  });
-}
 </script>
 
 <header class="titlebar" data-tauri-drag-region>
@@ -83,7 +91,11 @@ async function openSettings() {
       >
         <div class="dropdown-content">
             
-          <button class="menu-item">
+          <button 
+            class="menu-item" 
+            disabled={isHomePage} 
+            class:disabled={isHomePage}
+          >
             <Home size={16} class="menu-icon" />
             <span>Home</span>
           </button>
@@ -110,7 +122,7 @@ async function openSettings() {
 
 <style>
   :global(:root) {
-    --tb-height: 42px; /* Slightly taller to accommodate bigger text */
+    --tb-height: 42px; 
     --font-ui: "Segoe UI Variable", "Segoe UI", sans-serif;
     
     /* MICA VARS */
@@ -126,7 +138,7 @@ async function openSettings() {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0 0 12px; /* More padding for the bigger text */
+    padding: 0 0 0 12px; 
     position: fixed;
     top: 0;
     left: 0;
@@ -137,21 +149,16 @@ async function openSettings() {
     color: AccentColorText;
   }
 
-  /* DRAG FIX: 
-     The spacer consumes all available space and explicitly handles dragging.
-  */
+  /* DRAG FIX */
   .drag-spacer {
     flex-grow: 1;
     height: 100%;
-    /* Ensure nothing blocks this element */
     pointer-events: auto; 
   }
 
   /* LEFT MENU */
   .project-menu {
     position: relative;
-    /* Important: prevent this container from blocking drags in empty areas if any */
-    /* -webkit-app-region: no-drag; */
     margin-right: 8px;
   }
 
@@ -169,10 +176,9 @@ async function openSettings() {
     height: 34px;
   }
 
-  /* BIGGER TEXT STYLE */
   .project-name {
-    font-size: 16px; /* Increased from 13px */
-    font-weight: 400; /* Made bolder */
+    font-size: 16px; 
+    font-weight: 400; 
     letter-spacing: 0.3px;
   }
 
@@ -200,7 +206,7 @@ async function openSettings() {
     top: calc(100% + 4px);
     left: 0;
     width: 220px;
-    background: var(--glass-bg); /* 25% opacity */
+    background: var(--glass-bg); 
     backdrop-filter: blur(40px); 
     border: 1px solid var(--glass-border);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
@@ -221,7 +227,7 @@ async function openSettings() {
     align-items: center;
     gap: 12px;
     width: 100%;
-    padding: 10px 12px; /* Comfortable click area */
+    padding: 10px 12px; 
     background: transparent;
     border: none;
     color: #f0f0f0;
@@ -237,6 +243,16 @@ async function openSettings() {
     background: var(--tb-hover);
   }
 
+  /* 4. DISABLED STATE STYLING */
+  /* This makes the button look inactive and prevents clicks */
+  .menu-item:disabled,
+  .menu-item.disabled {
+    opacity: 0.5;
+    cursor: default;
+    background: transparent; /* Removes hover effect */
+    pointer-events: none;    /* Ensures no mouse interaction */
+  }
+
   /* RIGHT CONTROLS */
   .window-controls {
     display: flex;
@@ -245,7 +261,7 @@ async function openSettings() {
   }
 
   .control-btn {
-    width: 48px; /* Slightly wider for ease of use */
+    width: 48px; 
     height: 100%;
     display: flex;
     align-items: center;

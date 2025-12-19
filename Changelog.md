@@ -24,3 +24,5 @@ Added Accent Color and Accent color text
 *Reverted*
 ### Version 0.2.5 
 Added Theme Selector
+### Version 0.2.6 (Minor tweak)
+Disabled Home icon 
