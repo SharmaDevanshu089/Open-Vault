@@ -10,3 +10,7 @@ Major Overhaul visualy of the title bar
 **Issue**: Tauri Data Drag region still doesnt work as of this update
 ### Version 0.1.4
 Fixed Dragging and Added Close Logic via Frontend
+## Version 0.2.1
+Added Functioning Settings Window
+### Version 0.2.2
+Fixed titlebar and added Decorations in window.
