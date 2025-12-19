@@ -3,6 +3,10 @@
 
   let name = $state("");
   let greetMsg = $state("");
+  let bool = invoke<boolean>("check_first_run").then((res) => {
+    console.log("Is first run:", res);
+    return res;
+  });
 
   async function greet(event: Event) {
     event.preventDefault();

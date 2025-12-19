@@ -26,3 +26,5 @@ Added Accent Color and Accent color text
 Added Theme Selector
 ### Version 0.2.6 (Minor tweak)
 Disabled Home icon 
+## Version 0.3.0 
+Added Registry Context and a first run detector
