@@ -14,3 +14,5 @@ Fixed Dragging and Added Close Logic via Frontend
 Added Functioning Settings Window
 ### Version 0.2.2
 Fixed titlebar and added Decorations in window.
+### Version 0.2.3
+Fixed Settings Background

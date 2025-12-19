@@ -1,6 +1,5 @@
 <div class="container">
-  <h1>Hello World!</h1>
-  <p>This is a separate settings window.</p>
+  
 </div>
 
 <style>
@@ -15,3 +14,13 @@
     font-family: sans-serif;
   }
 </style>
+<script>
+  import { onMount } from 'svelte';
+  // Note: In Tauri v2, 'invoke' is in @tauri-apps/api/core
+  import { invoke } from '@tauri-apps/api/core'; 
+
+  onMount(() => {
+    // Tell Rust to apply Mica to THIS window
+    invoke('set_mica_effect');
+  });
+</script>
