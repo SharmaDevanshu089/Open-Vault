@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Passwords Management</title>
   <!-- Main Global Style -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="home.css">
   <!-- Page Specific Style -->
   <link rel="stylesheet" href="src/styles/passwords.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -28,18 +28,14 @@
   <!-- Global App Script (Sidebar, etc) -->
   <!-- <script type="text/javascript" src="app.js" defer></script> -->
   <!-- Page Specific Script -->
-  <script type="text/javascript" src="src/scripts/passwords.js" defer></script>
-  <script src="native.js"></script>
+  <script type="text/javascript" src="src/scripts/passwords.js" defer></script
+  <!-- <script src="native.js"></script> -->
 
   <!-- <nav id="sidebar"></nav> -->
   
   <main class="passwords-dashboard">
     <!-- Top Header / Title Area -->
     <header class="dashboard-header">
-      <div class="header-left">
-        <h1>Password Management</h1>
-        <p class="subtitle">Manage and audit your secure credentials</p>
-      </div>
       <div class="header-right">
         <!-- Global Action Buttons -->
         <button id="importCsvBtnGlobal" class="btn btn-primary">
