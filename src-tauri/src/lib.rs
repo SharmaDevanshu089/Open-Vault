@@ -29,7 +29,6 @@ fn set_mica_effect(window: tauri::Window) {
     #[cfg(target_os = "windows")]
     let _ = apply_mica(&window, None);
 }
-
 #[tauri::command]
 fn check_first_run() -> bool {
     // We define an internal helper to keep the '?' syntax for easy error handling
