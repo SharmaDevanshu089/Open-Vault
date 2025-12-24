@@ -228,9 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <main class="container">
-<html lang="en">
 
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Passwords Management</title>
@@ -244,9 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
   <!-- <script type="text/javascript" src="app.js" defer></script> -->
   <!-- Page Specific Script -->
   <script type="text/javascript" src="src/scripts/passwords.js" defer></script>
-</head>
 
-<body>
   <!-- <nav id="sidebar"></nav> -->
   
   <main class="passwords-dashboard">
@@ -380,8 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 
-</body>
-</html>
 </main>
 
 <style>
