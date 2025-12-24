@@ -1,6 +1,7 @@
 use tauri::Manager;
 // use window_vibrancy::apply_acrylic;
 use std::io;
+use whoami::realname;
 use window_vibrancy::apply_mica;
 use winreg::enums::*;
 use winreg::RegKey;
@@ -19,7 +20,11 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![set_mica_effect, check_first_run])
+        .invoke_handler(tauri::generate_handler![
+            set_mica_effect,
+            check_first_run,
+            get_full_name
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -65,4 +70,10 @@ fn check_first_run() -> bool {
             true
         }
     }
+}
+
+#[tauri::command]
+async fn get_full_name() -> String {
+    let name = realname();
+    name
 }

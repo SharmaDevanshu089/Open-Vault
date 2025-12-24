@@ -28,3 +28,5 @@ Added Theme Selector
 Disabled Home icon 
 ## Version 0.3.0 
 Added Registry Context and a first run detector
+### Version 0.3.1
+Added Proper User Setup page, and a name crate
