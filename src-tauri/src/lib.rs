@@ -55,7 +55,7 @@ fn check_first_run() -> bool {
             Err(_) => {
                 // Value missing -> First run
                 // Create the value now so next time returns false
-                vault_key.set_value("Installed", &1u32)?;
+                // vault_key.set_value("Installed", &1u32)?;
                 Ok(true)
             }
         }
