@@ -5,6 +5,7 @@ use whoami::realname;
 use window_vibrancy::apply_mica;
 use winreg::enums::*;
 use winreg::RegKey;
+mod handle_setup;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
