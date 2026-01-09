@@ -97,6 +97,6 @@ fn setup_master_password(password: String) -> Result<(), String> {
         .to_string();
 
     // println!("Password hash: {}", password_hash);
-    info!("Password hash: {}", password_hash);
+    println!("Password hash: {}", password_hash);
     Ok(()) // <--- YOU NEED THIS
 }
