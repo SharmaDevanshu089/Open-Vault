@@ -50,10 +50,10 @@ fn check_first_run() -> bool {
         let software = hkcu.open_subkey("Software")?;
 
         // Open or Create the "open_vault" key
-        let (vault_key, _disp) = software.create_subkey("open_vault")?;
+        let (vault_key, _disp) = software.create_subkey("Open Vault")?;
 
         // Try to get the value
-        let is_installed: Result<u32, _> = vault_key.get_value("Installed");
+        let is_installed: Result<u32, _> = vault_key.get_value("is_installed");
 
         match is_installed {
             Ok(_) => {
@@ -98,5 +98,21 @@ fn setup_master_password(password: String) -> Result<(), String> {
 
     // println!("Password hash: {}", password_hash);
     println!("Password hash: {}", password_hash);
-    Ok(()) // <--- YOU NEED THIS
+    // Ok(()) // <--- YOU NEED THIS
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    // let software = hkcu.open_subkey("Software")?;
+    let (key, _) = hkcu
+        .create_subkey("Software\\Open Vault")
+        .map_err(|e| format!("Registry error: {}", e))?;
+
+    // Open or Create the "open_vault" key
+    // let (vault_key, _disp) = software.create_subkey("open_vault")?;
+    key.set_value("MasterHash", &password_hash)
+        .map_err(|e| format!("Failed to save hash: {}", e))?;
+
+    // 4. Write "is_Installed" (DWORD / u32)
+    // We use 1 to represent "True"
+    key.set_value("is_installed", &1u32)
+        .map_err(|e| format!("Failed to save install flag: {}", e))?;
+    Ok(())
 }
