@@ -6,6 +6,10 @@ use window_vibrancy::apply_mica;
 use winreg::enums::*;
 use winreg::RegKey;
 mod handle_setup;
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+    Argon2,
+};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -24,7 +28,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             set_mica_effect,
             check_first_run,
-            get_full_name
+            get_full_name,
+            setup_master_password
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -77,4 +82,19 @@ fn check_first_run() -> bool {
 async fn get_full_name() -> String {
     let name = realname();
     name
+}
+
+#[tauri::command]
+fn setup_master_password(password: String) -> Result<(), String> {
+    let salt = SaltString::generate(&mut OsRng);
+    let argon2 = Argon2::default();
+
+    let password_hash = argon2
+        .hash_password(password.as_bytes(), &salt)
+        .map_err(|e| e.to_string())?
+        .to_string();
+
+    println!("Password hash: {}", password_hash);
+
+    Ok(()) // <--- YOU NEED THIS
 }
