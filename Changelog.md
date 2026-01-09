@@ -30,3 +30,6 @@ Disabled Home icon
 Added Registry Context and a first run detector
 ### Version 0.3.1
 Added Proper User Setup page, and a name crate
+
+---SOMETIME IN FUTURE---
+Since i am working on this alone i dont need this for myself : ) Depriciated.
