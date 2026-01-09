@@ -2,6 +2,7 @@
   import { fly } from 'svelte/transition';
   import { cubicOut, cubicIn } from 'svelte/easing';
   import { Eye, EyeOff, ArrowRight, ShieldCheck } from 'lucide-svelte';
+  import { invoke } from "@tauri-apps/api/core";
   
   // 1. Get the data passed from the backend (username, etc.)
   export let data; 
@@ -30,7 +31,7 @@
     setTimeout(() => {
         console.log("Saving Super Password:", password);
         // TODO: Call Rust invoke here to save password
-        // await invoke('save_master_password', { password });
+        invoke('setup_master_password', { password });
         // goto('/dashboard');
     }, 400);
   }

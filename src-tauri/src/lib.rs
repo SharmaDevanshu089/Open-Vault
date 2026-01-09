@@ -10,9 +10,11 @@ use argon2::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
 };
+use log::info;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    env_logger::init();
     tauri::Builder::default()
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();
@@ -94,7 +96,7 @@ fn setup_master_password(password: String) -> Result<(), String> {
         .map_err(|e| e.to_string())?
         .to_string();
 
-    println!("Password hash: {}", password_hash);
-
+    // println!("Password hash: {}", password_hash);
+    info!("Password hash: {}", password_hash);
     Ok(()) // <--- YOU NEED THIS
 }
