@@ -1,5 +1,7 @@
 # 🔐 Open Vault
 
+> ![Status](https://img.shields.io/badge/status-paused-orange) **Notice:** This project is currently paused. I may start development again in maybe in future.
+
 **A Native-First Password Manager for Windows**
 
 [![Made with Rust](https://img.shields.io/badge/Rust-🦀-orange?style=flat&logo=rust)](https://www.rust-lang.org/) 
